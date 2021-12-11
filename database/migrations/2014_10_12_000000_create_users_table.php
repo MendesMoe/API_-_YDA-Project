@@ -15,9 +15,7 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->integer('firm_id')->foreign()
-                ->references('id')->on('firms')
-                ->onDelete('cascade');
+            //$table->integer('firm_id')->foreign()->references('id')->on('firms')->onDelete('cascade');
             $table->string('lastname');
             $table->string('firstname');
             $table->string('email')->unique();
@@ -26,7 +24,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
-            $table->string('role');
+            $table->string('role')->nullable(); // seulement le temps de tester les migrates
             $table->string('comments')->nullable();
             $table->string('avatar')->nullable();
         });

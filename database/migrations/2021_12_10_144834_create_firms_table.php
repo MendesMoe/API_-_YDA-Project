@@ -19,7 +19,7 @@ class CreateFirmsTable extends Migration
             $table->string('name')->unique();
             $table->string('address')->unique();
             $table->string('phone');
-            $table->varchar('email');
+            $table->string('email');
             $table->string('logo')->nullable();
             $table->string('color')->nullable();
             $table->string('siret')->nullable();

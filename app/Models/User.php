@@ -19,7 +19,6 @@ class User extends Authenticatable
      */
     protected $guarded = [
         'id',
-        'firm_id',
 
     ];
 
