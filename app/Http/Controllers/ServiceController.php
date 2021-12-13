@@ -34,7 +34,7 @@ class ServiceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $id)
+    public function store(Request $request)
     {
         $service = new Service();
         $service->name = $request->name;
@@ -43,7 +43,20 @@ class ServiceController extends Controller
         $service->phone = $request->phone;
         $service->description_1 = $request->description_1;
         $service->description_2 = $request->description_2;
-        $service->type_id = $id;
+        $service->type_id = $request->type_id;
+
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $requestImage = $request->image;
+            $extension = $requestImage->extension();
+            $imageName = md5($requestImage->getClientOriginalName() . strtotime('now')) . "." . $extension;
+
+            $destinationPath = public_path('/img/services');
+            $requestImage->move($destinationPath, $imageName);
+
+            $service->image = $imageName;
+        } else {
+            $service->image = null;
+        }
 
 
 
@@ -52,9 +65,11 @@ class ServiceController extends Controller
         return response()->json([
             'status_code' => 200,
             "message" => "creation de service réussi",
+            "image" => $imageName,
             "services" => $service,
 
         ], 200);
+        //return view('image', compact('imageName'));
     }
 
     /**
