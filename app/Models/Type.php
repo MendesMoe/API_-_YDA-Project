@@ -11,9 +11,7 @@ class Type extends Model
 {
     use HasApiTokens;
 
-    protected $guarded = [
-        'id',
-    ];
+    protected $guarded = ['id'];
 
     public function services()
     {

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Type;
+use App\Models\Service;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class TypeController extends Controller
@@ -34,7 +37,17 @@ class TypeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $type = new Type();
+        $type->name = $request->name;
+
+        $type->save();
+
+        return response()->json([
+            'status_code' => 200,
+            "message" => "creation de type réussi",
+            "services" => $type,
+
+        ], 200);
     }
 
     /**
@@ -45,7 +58,13 @@ class TypeController extends Controller
      */
     public function show($id)
     {
-        //
+        $type = Type::whereId($id)->with('services.products')->get();
+
+        return response()->json([
+            'status_code' => 200,
+            'message' => 'Type, Service et produits associés',
+            'donnees' => $type,
+        ]);
     }
 
     /**
@@ -68,7 +87,13 @@ class TypeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $type = Type::findOrFail($id);
+        $type->update($request->all());
+        return response([
+            'status_code' => 200,
+            'message' => 'mise a jour du type réussie',
+            'donnees' => $type
+        ]);
     }
 
     /**
@@ -79,6 +104,11 @@ class TypeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $type = Type::findOrFail($id);
+        $type->delete();
+        return response([
+            'status_code' => 200,
+            'message' => 'suppression réussie'
+        ], 200);
     }
 }

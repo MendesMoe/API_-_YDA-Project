@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -31,11 +32,17 @@ Route::resource('/users', UserController::class);
 Route::resource('/firms', FirmController::class);
 
 Route::resource('/products', ProductController::class);
+Route::post('products/{id}', [ProductController::class, 'store']);
 
 Route::resource('/orders', OrderController::class);
 
 Route::resource('/services', ServiceController::class);
+Route::post('services/{id}', [ServiceController::class, 'store']);
 
 Route::resource('/odetails', OdetailController::class);
 
 Route::resource('/types', TypeController::class);
+
+// les routes du authcontroller
+Route::post('inscription', [AuthController::class, 'InscrisUtilisateur']);
+Route::post('connexion', [AuthController::class, 'connexion']);
