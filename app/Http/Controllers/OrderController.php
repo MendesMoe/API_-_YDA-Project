@@ -43,7 +43,7 @@ class OrderController extends Controller
             $odetail->price_product = Product::getPrice($odetail->product_id);
             $odetail->qtty = $product['quantity'];
             $odetail->order_id = $order->id;
-            //$odetail->name = $product['name'];
+            $odetail->name = $product['name'];
             $odetail->comments = $product['comment'];
             $odetail->total_odetail = $odetail->qtty * $odetail->price_product;
 
@@ -88,7 +88,7 @@ class OrderController extends Controller
     {
         $order = Order::findOrFail($id);
 
-        if ($order->status != "en attente") {
+        if ($order->status != "terminée") {
             $order->update($request->all());
 
             return response([
