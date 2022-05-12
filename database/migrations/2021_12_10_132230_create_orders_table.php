@@ -16,7 +16,7 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->enum('status', ['en attente', 'en cours', 'terminée'])->default('en attente');
+            $table->enum('status', ['en attente', 'en cours', 'terminee'])->default('en attente');
             $table->float('total')->nullable();
             $table->string('comments')->nullable();
             $table->string('note_admin')->nullable();

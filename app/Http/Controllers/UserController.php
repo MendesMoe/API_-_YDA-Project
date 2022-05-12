@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('Admin')->except(['index', 'show', 'update']);
+    }
 
     public function index()
     {
@@ -21,7 +25,6 @@ class UserController extends Controller
     }
 
     /*public function create(){}
-
     public function store(Request $request) {} */
 
     public function show(int $id)
@@ -49,19 +52,6 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
-        /*$request->validate([
-
-            'password' => [
-                'required',
-                'string',
-                'min:8',
-                'regex:/[a-z]/',
-                'regex:/[A-Z]/',
-                'regex:/[0-9]/',
-                'regex:/[@$!%#?&]/'
-            ]
-        ]);*/
-
         try {
             $user = User::findOrFail($id);
 

@@ -18,6 +18,7 @@ class OrderController extends Controller
     public function index()
     {
         $order = Order::with('odetails')->get();
+
         return response()->json([
             'status_code' => 200,
             'message' => ' liste des orders',
@@ -25,13 +26,8 @@ class OrderController extends Controller
         ]);
     }
 
-    //public function create() {}
-
     public function store(Request $request)
     {
-        //dd($request->user_id);
-        //dd($request->products);
-
         $order = new Order();
         $order->user_id = $request->user()->id;
         $order->comments = 'teste-lundi-midi';

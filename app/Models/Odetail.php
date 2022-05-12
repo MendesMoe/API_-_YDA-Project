@@ -9,6 +9,9 @@ use Illuminate\Notifications\Notifiable;
 
 class Odetail extends Model
 {
+    const INDISPONIBLE = 'indisponible';
+    const DISPONIBLE = 'disponible';
+
     use HasApiTokens, HasFactory, Notifiable;
 
     public function order()

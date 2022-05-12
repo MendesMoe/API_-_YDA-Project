@@ -2,25 +2,34 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Middleware\Admin;
+
 use App\Models\Firm;
 use App\Models\User;
 use Illuminate\Http\Request;
 
 class FirmController extends Controller
 {
+    public function __construct()
+    {
+        //$this->middleware('admin')->only(['store', 'destroy']);
+        //$this->middleware('admin', ['only' => ['store', 'update', 'destroy']]);
+    }
 
     public function index()
     {
-        //
-        $firms = Firm::with('users.orders.odetails')->get();
-        return  response()->json($firms, 200);
+        // Réponse différente pour Desktop et APP Mobile. Soucis d'optimization
+        if ($this->device === "desktop") {
+            $firms = Firm::with('users.orders.odetails')->get();
+            return  response()->json($firms, 200);
+        }
+        $firms = Firm::has('users.orders')->get();
+        return  response()->json($firms, 200); //Dois-je envoyer la réponse en json ?
     }
-
-    //public function create(){}
 
     public function store(Request $request)
     {
-        //
+
         $firm = new Firm();
         $firm->name = $request->name;
         $firm->address = $request->address;
@@ -74,12 +83,12 @@ class FirmController extends Controller
     public function show($id)
     {
         $firm = Firm::whereId($id)->with('users.orders.odetails')->get();
-        //$firm = Firm::findOrFail($id);
 
         return response()->json([
             'status_code' => 200,
             'message' => 'La firm, users, orders et odetails ssociés ont été trouvés',
             'tab_firms' => $firm,
+            'DEVICE' => $this->device,
         ]);
     }
 
@@ -105,11 +114,8 @@ class FirmController extends Controller
         ]);
     }
 
-
-
     public function destroy($id)
     {
-
         $firm = Firm::findOrFail($id);
         $deleted = $firm->delete();
 
@@ -117,7 +123,6 @@ class FirmController extends Controller
             $user = User::where('firm_id', $firm->id);
             $user->delete();
         }
-
 
         return response([
             'status_code' => 200,

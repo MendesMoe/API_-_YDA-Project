@@ -9,7 +9,12 @@ use Laravel\Sanctum\HasApiTokens;
 
 class Order extends Model
 {
+    const EN_ATTENTE = 'en attente';
+    const EN_COURS = 'en cours';
+    const TERMINEE = 'terminée';
+
     use HasApiTokens;
+    use HasFactory;
 
     protected $guarded = [
         'id',

@@ -15,24 +15,27 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-//////// LES ROUTES RESSOURCES /////
+// LES ROUTES RESSOURCES //
 
 Route::resource('/users', UserController::class);
 
-Route::resource('/firms', FirmController::class)->middleware('auth:sanctum');
+Route::group(['middleware' => 'auth:sanctum'], function () {
 
-Route::resource('/products', ProductController::class)->middleware('auth:sanctum');
+    Route::resource('/firms', FirmController::class);
 
-Route::resource('/orders', OrderController::class)->middleware('auth:sanctum');
+    Route::resource('/products', ProductController::class);
 
-Route::resource('/services', ServiceController::class)->middleware('auth:sanctum');
+    Route::resource('/orders', OrderController::class);
 
-Route::resource('/odetails', OdetailController::class)->middleware('auth:sanctum');
+    Route::resource('/services', ServiceController::class);
 
-Route::resource('/types', TypeController::class)->middleware('auth:sanctum');
+    Route::resource('/odetails', OdetailController::class);
 
-//////// LES ROUTES AuthController /////
+    Route::resource('/types', TypeController::class);
+});
 
+
+// LES ROUTES AuthController //
 Route::post('inscription', [AuthController::class, 'newUser']);
 
 Route::get('verify-token/{token}', [AuthController::class, 'verifyToken'])->name('verify-token');

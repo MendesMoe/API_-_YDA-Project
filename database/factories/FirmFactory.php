@@ -3,8 +3,6 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Hash;
 
 class FirmFactory extends Factory
 {
@@ -18,10 +16,29 @@ class FirmFactory extends Factory
         return [
             'address' => $this->faker->streetAddress(),
             'name' => $this->faker->firstname(),
-            'phone' => $this->faker->phoneNumber(),
+            'phone' => str_replace(" ", "", $this->faker->phoneNumber()),
             'email' => $this->faker->email(),
-            'visit_day_1' => 'mardi',
-            'time_1' => 8,
+            'visit_day_1' => $this->faker->randomElement([
+                'lundi',
+                'mardi',
+                'mercredi',
+            ]),
+            'time_1' => $this->faker->randomElement([
+                '8',
+                '10',
+                '14',
+            ]),
+            'visit_day_2' => $this->faker->randomElement([
+                'mardi',
+                'jeudi',
+                'vendredi'
+            ]),
+            'time_2' => $this->faker->randomElement([
+                '10',
+                '14',
+                '16',
+                '12',
+            ]),
 
             "title" => $this->faker->lastname(),
             "news" => $this->faker->text(),

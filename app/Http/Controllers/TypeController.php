@@ -9,6 +9,10 @@ use Illuminate\Http\Request;
 
 class TypeController extends Controller
 {
+    public function __construct()
+    {
+        //$this->middleware('admin')->only(['store', 'update', 'destroy']);
+    }
 
     public function index()
     {

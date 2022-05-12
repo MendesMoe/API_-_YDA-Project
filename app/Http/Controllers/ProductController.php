@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    public function __construct()
+    {
+        //$this->middleware('admin')->only(['store', 'update', 'destroy']);
+    }
 
     public function index()
     {
@@ -63,7 +67,7 @@ class ProductController extends Controller
 
     public function show(int $id)
     {
-        $product = Product::all();
+        $product = Product::whereId($id)->get();
 
         return response()->json([
             'status_code' => 200,

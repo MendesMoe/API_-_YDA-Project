@@ -28,7 +28,7 @@ class MagicLoginLink extends Mailable
     {
         return $this->subject('Your Daily Assistant ' . '- Login Verification')
             ->markdown('emails.magic-login-link', [
-                'url' => "http://localhost:8080/initialisation/" . $this->plaintextToken
+                'url' => "http://localhost:8000/initialisation/" . $this->plaintextToken
             ]);
     }
 }

@@ -3,8 +3,6 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Hash;
 
 class TypeFactory extends Factory
 {
@@ -16,7 +14,7 @@ class TypeFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->lastname(),
+            'name' => $this->faker->randomElement(["Alimentation", "Bien-Etre", "Maison"]),
         ];
     }
 }

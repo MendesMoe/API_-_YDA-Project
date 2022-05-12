@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Jenssegers\Agent\Facades\Agent;
 
 class AuthController extends Controller
 {
@@ -135,7 +136,7 @@ class AuthController extends Controller
                 'access_token' => $tokenResult,
                 'token_type' => 'Bearer',
                 'role' => $role,
-                'id' => $user->id,
+                'id' => $id,
 
             ]);
         } catch (ValidationException $error) {

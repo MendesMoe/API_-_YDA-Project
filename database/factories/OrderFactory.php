@@ -2,9 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Order;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Hash;
 
 class OrderFactory extends Factory
 {
@@ -16,8 +15,11 @@ class OrderFactory extends Factory
     public function definition()
     {
         return [
-            'status' => "en cours",
-            'total' => $this->faker->floatval(),
+            'status' => $this->faker->randomElement([
+                Order::EN_ATTENTE,
+                Order::EN_COURS,
+                Order::TERMINEE,
+            ]),
             'comments' => $this->faker->lastname(),
             'note_admin' => $this->faker->text(),
         ];
