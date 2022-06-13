@@ -11,12 +11,13 @@ class Service extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+
     protected $guarded = ['id'];
 
     public function products()
     {
 
-        return $this->hasMany(Product::class, 'service_id');
+        return $this->hasMany(Product::class);
     }
     public function type()
     {

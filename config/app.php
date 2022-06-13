@@ -80,7 +80,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'fr',
 
     /*
     |--------------------------------------------------------------------------
@@ -106,7 +106,7 @@ return [
     |
     */
 
-    'faker_locale' => 'en_US',
+    'faker_locale' => 'fr_FR',
 
     /*
     |--------------------------------------------------------------------------
@@ -165,7 +165,7 @@ return [
         /*
          * Package Service Providers...
          */
-
+        Jenssegers\Agent\AgentServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -174,6 +174,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+
 
     ],
 
@@ -229,7 +230,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-
+        'Agent' => Jenssegers\Agent\Facades\Agent::class,
     ],
 
 ];

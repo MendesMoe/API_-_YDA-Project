@@ -5,37 +5,40 @@ namespace App\Http\Controllers;
 use App\Models\Service;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use \App\Http\Middleware;
 
 class ServiceController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function __construct()
     {
-        //
+        //$this->middleware('admin')->only('show', 'edit');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function index()
+    {
+        $service = Service::all();
+        return response()->json([
+            'status_code' => 200,
+            'message' => ' liste des services',
+            'donnees' => $service,
+        ]);
+    }
+
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(Illuminate\Http\Request $request)
     {
+        $request->validate([
+
+            'name' => 'required|unique:services|max:99',
+            'description' => 'string',
+            'price' => 'numeric',
+            'image' => 'dimensions:min_width=100,min_height=200',
+        ]);
+
         $service = new Service();
         $service->name = $request->name;
         $service->image = $request->image;
@@ -45,11 +48,14 @@ class ServiceController extends Controller
         $service->description_2 = $request->description_2;
         $service->type_id = $request->type_id;
 
+        $service->status = $request->status;
+
+        //////// SAVE A IMAGE ////////
+
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
             $requestImage = $request->image;
             $extension = $requestImage->extension();
             $imageName = md5($requestImage->getClientOriginalName() . strtotime('now')) . "." . $extension;
-
             $destinationPath = public_path('/img/services');
             $requestImage->move($destinationPath, $imageName);
 
@@ -57,8 +63,6 @@ class ServiceController extends Controller
         } else {
             $service->image = null;
         }
-
-
 
         $service->save();
 
@@ -72,15 +76,8 @@ class ServiceController extends Controller
         //return view('image', compact('imageName'));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        //$service = Service::all();
         $service = Service::whereId($id)->with('products')->get();
 
         return response()->json([
@@ -90,24 +87,17 @@ class ServiceController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        //
+        $service = Service::whereId($id)->get();
+
+        return response()->json([
+            'status_code' => 200,
+            'message' => 'Edit du service',
+            'donnees' => $service,
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $service = Service::findOrFail($id);
@@ -119,16 +109,15 @@ class ServiceController extends Controller
         ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         $service = Service::findOrFail($id);
-        $service->delete();
+        $deleted = $service->delete();
+
+        if ($deleted) {
+            $product = Product::where('service_id', $service->id);
+            $product->delete();
+        }
         return response([
             'status_code' => 200,
             'message' => 'suppression réussie ainsi que les produits associés'

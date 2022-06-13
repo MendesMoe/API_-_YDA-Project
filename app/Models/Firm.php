@@ -16,6 +16,6 @@ class Firm extends Model
     public function users()
     {
 
-        return $this->hasMany(User::class, 'user_id');
+        return $this->hasMany(User::class);
     }
 }

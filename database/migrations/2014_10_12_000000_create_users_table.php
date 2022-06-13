@@ -17,16 +17,17 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->integer('firm_id')->foreign()
                 ->references('id')->on('firms')
-                ->onDelete('cascade');
+                ->onDelete('cascade')->nullable();
             $table->string('lastname');
             $table->string('firstname');
+            $table->date('birthday')->nullable();
             $table->string('email')->unique();
             $table->string('phone')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
-            $table->string('role');
+            $table->enum('role', ['admin', 'member', 'manager'])->default('member');
             $table->string('comments')->nullable();
             $table->string('avatar')->nullable();
         });
