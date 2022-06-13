@@ -11,6 +11,7 @@ class Product extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+
     protected $guarded = ['id'];
 
     public function service()
@@ -22,6 +23,11 @@ class Product extends Model
     public function odetails()
     {
 
-        return $this->hasMany(Odetail::class, 'product_id');
+        return $this->hasMany(Odetail::class); //belongsToMany ???
+    }
+
+    public static function getPrice($id)
+    {
+        return Product::where('id', $id)->value('price');
     }
 }

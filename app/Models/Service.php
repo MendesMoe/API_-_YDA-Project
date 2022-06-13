@@ -11,9 +11,8 @@ class Service extends Model
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected $guarded = [
-        'id',
-    ];
+
+    protected $guarded = ['id'];
 
     public function products()
     {

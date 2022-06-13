@@ -6,8 +6,10 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
+        "doctrine/dbal": "v2.4.2",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
+        "jenssegers/agent": "^2.6",
         "laravel/framework": "^8.65",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5"
@@ -15,6 +17,7 @@
     "require-dev": {
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
+        "laravel/browser-kit-testing": "^6.3",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^5.10",

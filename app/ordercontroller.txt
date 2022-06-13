@@ -1,0 +1,137 @@
+public function store(Request $request)
+    {
+
+        $order = new Order();
+
+        //$order->total = $request->total;
+        //$order->comments = $request->comments;
+        $order->user_id = $request->user_id;
+        $order->save();
+
+        /* return response()->json([
+            'status_code' => 200,
+            "message" => "new order ok",
+            "produits" => $order,
+        ], 201);*/
+        $products = [];
+        $products = [
+            [
+                'product_id' => 2,
+                'price_product' => 2.00,
+                'qtty' => 2,
+            ],
+            [
+                'product_id' => 3,
+                'price_product' => 3.00,
+                'qtty' => 3,
+            ]
+        ];
+
+        $array = [];
+        foreach ($products as $odetail) { // array[] = [] é como fazer un array_push vai colocar um tab dentro de um tab
+            $array[] = [
+                'product_id' => $odetail . product_id, //ici va recuperer le tableau products de la request
+                'price_product' => $odetail . price_product,
+                'qtty' => $odetail . qtty,
+            ];
+        }
+        //dd($array);
+        $order->odetails()->createMany(
+            $array
+        );
+
+        /*foreach ($products as $product) {
+            # code...
+            $odetail = new Odetail();
+            $odetail->product_id = $product.product_id;
+            $odetail->price_product = $product.price_product;
+            $odetail->qtty = $product.qtty;
+            $odetail->order_id -> order_id;
+            $odetail->save();
+        };*/
+        // pour le prix il faut mettre une variable dans le foreach pour recuperer le prix a chaque ajout de produit
+        // par exemple :
+        /*$totalPrice = 0;
+        foreach(['cart_items'] as $item)
+        {
+        $totalPrice+=$item['price'];
+        ... etc
+        }
+        */
+
+        //$odetail->save($request->all());
+        /*
+        $odetail2 = new Odetail();
+
+        $odetail2->product_id = '2';
+        $odetail2->price_product = Product::where('id', $odetail->product_id)->value('price');
+        $odetail2->qtty = 3;
+        $odetail2->total_odetail = $odetail2->qtty * $odetail2->price_product;
+        $odetail2->order_id = $order->id;
+
+        $odetail2->save($request->all());
+*/
+
+        //$order->total = Odetail::where('id', $order->id)->sum('price_product');
+
+
+        //$order->total->save($total);
+
+
+
+---------
+
+/* var_dump("values=> ");
+        dd($request->cart);
+        array_push($values, $unit);
+
+        array_push($values, $unit);
+        $fakerequest = [ //comme si cetait la vrai request
+            0 => [
+                "product_id" => "4",
+                "price" => "4",
+                "quantity" => "3"
+            ],
+            1 => [
+                "product_id" => "4",
+                "price" => "4",
+                "quantity" => "3"
+            ]
+        ];
+
+        $order->user_id = 1; //en vrai cest $request->user_id;
+        $result = $order->save();
+
+        if ($result) {
+            $order->odetails()->saveMany($fakerequest);
+        }
+
+
+        // $odetails = $request->products;
+        /*
+        dd($request->cart);
+        $donnes = $request->cart;
+        return response()->json([
+            'status_code' => 200,
+            "message" => "teste",
+            "request" => $donnes,
+        ], 201);
+        dd($request);
+
+        //$odetail->save($request->all());
+        /*
+        $odetail2 = new Odetail();
+
+        $odetail2->product_id = '2';
+        $odetail2->price_product = Product::where('id', $odetail->product_id)->value('price');
+        $odetail2->qtty = 3;
+        $odetail2->total_odetail = $odetail2->qtty * $odetail2->price_product;
+        $odetail2->order_id = $order->id;
+
+        $odetail2->save($request->all());
+*/
+
+        //$order->total = Odetail::where('id', $order->id)->sum('price_product');
+
+
+        //$order->total->save($total);

@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 
 class UserFactory extends Factory
 {
@@ -15,13 +16,16 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
-            'lastname' => $this->faker->lastName(),
-            'firstname' => $this->faker->firstName(),
+            'lastname' => $this->faker->lastname(),
+            'firstname' => $this->faker->firstname(),
             'email' => $this->faker->unique()->safeEmail(),
+            'phone' => $this->faker->phoneNumber(),
             'email_verified_at' => now(),
-            'password' => '12345678', // password
+            'birthday' => str_replace("/", "-", $this->faker->dateTimeBetween('1980-01-01', '2005-12-31')
+                ->format('Y-m-d')),
+            'password' => Hash::make('12345678'),
             'remember_token' => Str::random(10),
-            'role' => 'admin',
+            //'role' => ('member'),
         ];
     }
 

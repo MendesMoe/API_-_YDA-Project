@@ -4,6 +4,7 @@ use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use \App\Models\User;
+use Jenssegers\Agent\Facades\Agent;
 
 /*
 |--------------------------------------------------------------------------
