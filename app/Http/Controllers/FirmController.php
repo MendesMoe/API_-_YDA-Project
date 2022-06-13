@@ -82,14 +82,18 @@ class FirmController extends Controller
 
     public function show($id)
     {
-        $firm = Firm::whereId($id)->with('users.orders.odetails')->get();
+        if ($this->device === "desktop") {
+            $firm = Firm::whereId($id)->with('users.orders.odetails')->get();
 
-        return response()->json([
-            'status_code' => 200,
-            'message' => 'La firm, users, orders et odetails ssociés ont été trouvés',
-            'tab_firms' => $firm,
-            'DEVICE' => $this->device,
-        ]);
+            return response()->json([
+                'status_code' => 200,
+                'message' => 'La firm, users, orders et odetails ssociés ont été trouvés',
+                'tab_firms' => $firm,
+                'DEVICE' => $this->device,
+            ]);
+        }
+        $firm = Firm::with('users')->has('users.orders')->get();
+        return  response()->json($firm, 200); //Dois-je envoyer la réponse en json ?
     }
 
     public function edit($id)

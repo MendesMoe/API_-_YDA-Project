@@ -42,7 +42,13 @@ class FirmFactory extends Factory
 
             "title" => $this->faker->lastname(),
             "news" => $this->faker->text(),
-            "image" => "5e5cb18c230d1682ae0ebe34abfdf341.jpg"
+            "image" => "5e5cb18c230d1682ae0ebe34abfdf341.jpg",
+            'color' => $this->faker->randomElement([
+                '#85aff2',
+                '#f5ad64',
+                '#80ed74',
+                '#f2b1df',
+            ]),
         ];
     }
 }

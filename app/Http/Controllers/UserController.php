@@ -11,7 +11,7 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('Admin')->except(['index', 'show', 'update']);
+        //$this->middleware('Admin')->except(['index', 'show', 'update']);
     }
 
     public function index()
@@ -36,6 +36,23 @@ class UserController extends Controller
             'status_code' => 200,
             'message' => 'Données du user + orders+ odetails',
             'donnees' => $user,
+        ]);
+    }
+
+    public function getCustomersByCompany($id)
+    {
+        $users = User::where('firm_id', $id)->has('orders')->with('orders.odetails')->get();
+
+        if ($users) {
+            return response()->json([
+                'status_code' => 200,
+                'message' => 'Données des users by company, only with orders - for mobile',
+                'donnees' => $users,
+            ]);
+        }
+        return response()->json([
+            'status_code' => 404,
+            'message' => 'erreur avec getCustomersByCompany'
         ]);
     }
 

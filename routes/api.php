@@ -19,20 +19,20 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::resource('/users', UserController::class);
 
-Route::group(['middleware' => 'auth:sanctum'], function () {
+//Route::group(['middleware' => 'auth:sanctum'], function () {
 
-    Route::resource('/firms', FirmController::class);
+Route::resource('/firms', FirmController::class);
 
-    Route::resource('/products', ProductController::class);
+Route::resource('/products', ProductController::class);
 
-    Route::resource('/orders', OrderController::class);
+Route::resource('/orders', OrderController::class);
 
-    Route::resource('/services', ServiceController::class);
+Route::resource('/services', ServiceController::class);
 
-    Route::resource('/odetails', OdetailController::class);
+Route::resource('/odetails', OdetailController::class);
 
-    Route::resource('/types', TypeController::class);
-});
+Route::resource('/types', TypeController::class);
+//});
 
 
 // LES ROUTES AuthController //
@@ -49,3 +49,5 @@ Route::post('logout', [AuthController::class, 'logout']);
 Route::put('majMdp/{id}', [AuthController::class, 'majPassword']);
 
 Route::post('checkToken/{token}', [AuthController::class, 'verifyToken']);
+
+Route::get('/getUsersWithOrdersByFirm/{id}', [UserController::class, 'getCustomersByCompany']);

@@ -10,7 +10,7 @@ class ServiceController extends Controller
 {
     public function __construct()
     {
-        //$this->middleware('admin', ['only' => ['store', 'update', 'destroy']]);
+        $this->middleware('admin')->only('show', 'edit');
     }
 
     public function index()

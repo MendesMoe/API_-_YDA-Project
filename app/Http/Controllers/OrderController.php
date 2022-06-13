@@ -88,7 +88,7 @@ class OrderController extends Controller
     {
         $order = Order::findOrFail($id);
 
-        if ($order->status != "terminée") {
+        if ($order->status != "terminee" && $order->status != "annule") {
             $order->update($request->all());
 
             return response([
@@ -98,7 +98,7 @@ class OrderController extends Controller
             ]);
         } else {
             return response([
-                'message' => 'La commande est en cours ou terminée',
+                'message' => 'La commande est terminée ou annulé',
                 'order->status' => $order->status,
             ]);
         }

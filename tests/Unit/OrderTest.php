@@ -1,35 +1,26 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Unit;
 
-use App\Models\Service;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\Models\Type;
-use App\Models\Product;
 
 class OrderTest extends TestCase
 {
-    use RefreshDatabase;
+    //use RefreshDatabase;
     /**
      * A basic feature test example.
      *
      * @return void
      */
-    public function test_example()
-    {
-        $response = $this->get('/');
 
-        $response->assertStatus(200);
-    }
-
-    public function delete_type_service_product()
+    public function test_create_type()
     {
-        $type = Type::factory(1)
-            ->has(Service::factory()->count(1)
-                ->has(Product::factory()->count(1), [
-                    'status' => 'inactif'
-                ]))
-            ->create();
+        $type = Type::factory(1)->create(
+            ['name' => 'tipoteste']
+        );
+
+        $this->assertDatabaseHas('types', ['name' => 'tipoteste']);
     }
 }
