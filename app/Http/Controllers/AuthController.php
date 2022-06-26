@@ -107,15 +107,16 @@ class AuthController extends Controller
 
         //return view('auth.login', compact('user'));
     }
+    /**
+     * @param Request $request
+     */
     public function login(Request $request)
     {
 
-        $request->validate([
+        $credentials = $request->validate([
             'email' => 'email|required',
             'password' => 'required'
         ]);
-
-        $credentials = request(['email', 'password']);
 
         if (!Auth::attempt($credentials)) {
             return response()->json([
@@ -131,6 +132,7 @@ class AuthController extends Controller
         $tokenResult = $user->createToken('authToken')->plainTextToken;
         $role = $user->role;
         $id = $user->id;
+        $name = $user->firstname . " " . $user->lastname;
 
 
         return response()->json([
@@ -139,6 +141,7 @@ class AuthController extends Controller
             'token_type' => 'Bearer',
             'role' => $role,
             'id' => $id,
+            'name' => $name,
 
         ]);
     }

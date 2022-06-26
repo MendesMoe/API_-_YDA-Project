@@ -21,7 +21,7 @@ class OrderController extends Controller
 
         return response()->json([
             'status_code' => 200,
-            'message' => ' liste des orders',
+            'message' => ' liste des orders with odetails',
             'donnees' => $order,
         ]);
     }
