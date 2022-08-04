@@ -19,6 +19,7 @@ class OrderFactory extends Factory
                 Order::EN_ATTENTE,
                 Order::EN_COURS,
                 Order::TERMINEE,
+                Order::ANNULEE,
             ]),
             'comments' => $this->faker->lastname(),
             'note_admin' => $this->faker->text(),

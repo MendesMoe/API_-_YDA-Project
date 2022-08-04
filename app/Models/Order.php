@@ -9,9 +9,10 @@ use Laravel\Sanctum\HasApiTokens;
 
 class Order extends Model
 {
-    const EN_ATTENTE = 'en attente';
-    const EN_COURS = 'en cours';
-    const TERMINEE = 'terminée';
+    const EN_ATTENTE = 'En Attente';
+    const EN_COURS = 'En Cours';
+    const TERMINEE = 'Terminée';
+    const ANNULEE = "Annulee";
 
     use HasApiTokens;
     use HasFactory;
@@ -23,14 +24,12 @@ class Order extends Model
 
     public function user()
     {
-
         return $this->belongsTo(User::class);
     }
 
 
     public function odetails()
     {
-
         return $this->hasMany(Odetail::class);
     }
 }

@@ -80,4 +80,21 @@ class User extends Authenticatable
     {
         return User::where('id', $id)->value('firm_id');
     }
+
+    public static function getUsersByFirmsByStatus($firmId)
+    {
+        $users = User::where('firm_id', $firmId)->has('orders')->with('orders.odetails')->get();
+
+        foreach ($users as $user) {
+
+            $ordersOnHold[] = $user->orders->filter(function ($order) {
+                return ($order->status != "terminee" && $order->status != "annule");
+            });
+
+            if (count($ordersOnHold) > 1) {
+                $user->orders = $ordersOnHold;
+            }
+        }
+        return $users;
+    }
 }

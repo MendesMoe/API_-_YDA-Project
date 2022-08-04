@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Ramsey\Uuid\Type\Integer;
 
 class OrderController extends Controller
 {
@@ -88,7 +89,8 @@ class OrderController extends Controller
     {
         $order = Order::findOrFail($id);
 
-        if ($order->status != "terminee" && $order->status != "annule") {
+        if ($order->status != Order::TERMINEE && $order->status != Order::ANNULEE) {
+
             $order->update($request->all());
 
             return response([
@@ -102,6 +104,30 @@ class OrderController extends Controller
                 'order->status' => $order->status,
             ]);
         }
+    }
+    /**
+     * @param Request $request
+     */
+    public function changeStatus(Request $request)
+    {
+        $order = Order::findOrFail($request->id);
+
+        $success = $order->update([
+            'status' => $request->newStatus
+        ]);
+
+        if ($success) {
+            return response()->json([
+                'status_code' => 200,
+                'message' => 'success update order',
+                'newStatus' => $order->status,
+            ], 201);
+        }
+        return response()->json([
+            'status_code' => 400,
+            'message' => 'Le status n\'a pas pu etre modifiée',
+            'orderstatus' => $order->status,
+        ], 404);
     }
 
     public function destroy($id)

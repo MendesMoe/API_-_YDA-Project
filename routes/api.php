@@ -51,3 +51,7 @@ Route::put('majMdp/{id}', [AuthController::class, 'majPassword']);
 Route::post('checkToken/{token}', [AuthController::class, 'verifyToken']);
 
 Route::get('/getUsersWithOrdersByFirm/{id}', [UserController::class, 'getCustomersByCompany']);
+
+/////// ROUTE MOBILE UPDATE ORDER STATUS
+
+Route::put('order/changeStatus', [OrderController::class, 'changeStatus']);

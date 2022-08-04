@@ -20,11 +20,43 @@ class FirmController extends Controller
     public function index()
     {
         // Réponse différente pour Desktop et APP Mobile. Soucis d'optimization
-        if ($this->device === "desktop") {
-            $firms = Firm::with('users.orders.odetails')->get();
-            return  response()->json($firms, 200);
+        //if ($this->device === "desktop") {
+        //  $firms = Firm::with('users.orders.odetails')->get();
+        //return  response()->json($firms, 200);
+        //}
+        //$firms = Firm::has('users.orders')->get();
+
+        $firms = Firm::has('users.orders')->with('users.orders')->get();
+
+        foreach ($firms as $firm) {
+            //pour chaque firm
+            $usersWithoutOrders = [];
+            for ($m = 0; $m < $firm->users->count(); $m++) {
+                //pour chaque user
+                $ordersOnHold = $firm->users[$m]->orders->filter(function ($order) {
+                    return ($order->status != "terminee" && $order->status != "annule");
+                });
+
+                for ($j = 0; $j < $firm->users[$m]->orders->count(); $j++) {
+                    if (isset($ordersOnHold[$j])) {
+                        $firm->users[$m]->orders[$j] = $ordersOnHold[$j];
+                    } else {
+                        unset($firm->users[$m]->orders[$j]);
+                    }
+                }
+
+                if ($firm->users[$m]->orders->isEmpty()) {
+
+                    $usersWithoutOrders[] = $m;
+                }
+            }
+            foreach ($usersWithoutOrders as $index) {
+                # code...
+                unset($firm->users[$index]);
+            }
+            //dd($firm);
         }
-        $firms = Firm::has('users.orders')->get();
+
         return  response()->json($firms, 200); //Dois-je envoyer la réponse en json ?
     }
 

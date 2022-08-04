@@ -1,0 +1,15 @@
+for($i = 0; $i < $user->orders; $i++) {
+
+        }
+
+        return $users->reject(function ($user, $key) {
+            $userARenvoyer = false;
+            foreach ($user->orders as $order) {
+                dump($order->status);
+                if ($order->status != "terminee") {
+                    $userARenvoyer = true;
+                    break;
+                }
+            }
+            return $userARenvoyer;
+        });

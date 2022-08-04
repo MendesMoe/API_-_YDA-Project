@@ -24,9 +24,6 @@ class UserController extends Controller
         ]);
     }
 
-    /*public function create(){}
-    public function store(Request $request) {} */
-
     public function show(int $id)
     {
         $user = User::whereId($id)->with('orders.odetails')->get();
@@ -42,12 +39,35 @@ class UserController extends Controller
     public function getCustomersByCompany($id)
     {
         $users = User::where('firm_id', $id)->has('orders')->with('orders.odetails')->get();
+        $res = array();
+        $u = $users->filter(function ($item) {
+            $ordersOnHold = $item->orders->filter(function ($order) {
+                return ($order->status != "terminee" && $order->status != "annule");
+            });
 
-        if ($users) {
+            for ($j = 0; $j <= sizeof($item->orders); $j++) {
+                if (isset($ordersOnHold[$j])) {
+                    $item->orders[$j] = $ordersOnHold[$j];
+                } else {
+                    unset($item->orders[$j]);
+                }
+            }
+
+            return !($item->orders->isEmpty());
+        });
+        //$u->toArray();
+
+        // dd($u);
+        //dd($u->toArray());
+        if ($u) {
+            foreach ($u as $user) {
+                # code...
+                $res[] = $user;
+            }
             return response()->json([
                 'status_code' => 200,
                 'message' => 'Données des users by company, only with orders - for mobile',
-                'donnees' => $users,
+                'donnees' => $res,
             ]);
         }
         return response()->json([
