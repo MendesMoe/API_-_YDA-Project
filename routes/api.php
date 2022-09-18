@@ -55,3 +55,14 @@ Route::get('/getUsersWithOrdersByFirm/{id}', [UserController::class, 'getCustome
 /////// ROUTE MOBILE UPDATE ORDER STATUS
 
 Route::put('order/changeStatus', [OrderController::class, 'changeStatus']);
+
+/////// ROUTE DESKTOP QTTY ORDERS TOTAL / QTTY CA TOTAL / QTTY CA PER MONTH
+
+Route::get('/getCATotal', [OrderController::class, 'getCATotalEnEuros']);
+
+Route::get('/getOrdersQtty', [OrderController::class, 'getOrdersQtty']);
+
+Route::get('/getCAPreviousMonth', [OrderController::class, 'getCAPreviousMonth']);
+
+
+Route::get('/getCAByMonth', [OrderController::class, 'getCAByMonth']);

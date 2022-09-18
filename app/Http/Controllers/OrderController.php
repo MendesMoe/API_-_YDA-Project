@@ -145,4 +145,73 @@ class OrderController extends Controller
             'message' => 'suppression réussie ainsi que les odetails associés'
         ], 200);
     }
+
+    public function getCATotalEnEuros()
+    {
+        $totalEuros = Order::sum('total');
+
+        return response([
+            'status_code' => 200,
+            'message' => 'Le CA total en Euros',
+            'total' => $totalEuros
+        ], 200);
+    }
+
+    public function getOrdersQtty()
+    {
+        $totalOrders = Order::count();
+
+        return response([
+            'status_code' => 200,
+            'message' => 'La quantité de commandes',
+            'total' => $totalOrders
+        ], 200);
+    }
+
+    public function getCAPreviousMonth()
+    {
+        $previousMonth = $this->getPreviousMonth();
+
+        $caPreviousMonth = Order::whereMonth('created_at', '=', $previousMonth)
+            ->sum('total');
+
+        return response([
+            'status_code' => 200,
+            'message' => 'Le CA pour le mois precedent',
+            'total' => $caPreviousMonth
+        ], 200);
+    }
+
+    private function getPreviousMonth()
+    {
+        return date("m", strtotime("first day of previous month"));
+    }
+
+    public function getCAByMonth()
+    {
+        $mois = [
+            "01" => "Janvier",
+            "02" => "Fevrier",
+            "03" => "Mars",
+            "04" => "Avril",
+            "05" => "Mai",
+            "06" => "Juin",
+            "07" => "Juillet",
+            "08" => "Aout",
+            "09" => "Septembre",
+            "10" => "Octobre",
+            "11" => "Novembre",
+            "12" => "Decembre"
+
+        ];
+
+        $caResult = [];
+
+        foreach ($mois as $key => $value) {
+            $caResult[$value] = Order::whereMonth('created_at', '=', $key)
+                ->sum('total');
+        }
+
+        return $caResult;
+    }
 }
