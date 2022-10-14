@@ -26,8 +26,8 @@ class Product extends Model
         return $this->hasMany(Odetail::class); //belongsToMany ???
     }
 
-    public static function getPrice($id)
+    public function getPrice()
     {
-        return Product::where('id', $id)->value('price');
+        return $this->price;
     }
 }

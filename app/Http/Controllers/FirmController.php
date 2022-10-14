@@ -8,6 +8,7 @@ use App\Models\Firm;
 use App\Models\User;
 use Illuminate\Http\Request;
 use \App\Http\Middleware;
+use App\Http\Requests\StoreFirm;
 
 class FirmController extends Controller
 {
@@ -16,7 +17,9 @@ class FirmController extends Controller
         //$this->middleware('admin')->only(['store', 'destroy']);
         //$this->middleware('admin', ['only' => ['store', 'update', 'destroy']]);
     }
-
+    /*
+    * Method qui permet d'afficher toutes les entreprises existantes (Desktop) et seulement celles dont les utilisateurs possedent une commande en attente (Mobile)
+    */
     public function index()
     {
         // Réponse différente pour Desktop et APP Mobile. Soucis d'optimization
@@ -51,34 +54,17 @@ class FirmController extends Controller
                 }
             }
             foreach ($usersWithoutOrders as $index) {
-                # code...
                 unset($firm->users[$index]);
             }
-            //dd($firm);
         }
 
-        return  response()->json($firms, 200); //Dois-je envoyer la réponse en json ?
+        return  response()->json([$firms, 200, "funcao index"]); //Dois-je envoyer la réponse en json ?
     }
 
-    public function store(Request $request)
+    public function store(StoreFirm $request)
     {
-
-        $firm = new Firm();
-        $firm->name = $request->name;
-        $firm->address = $request->address;
-        $firm->phone = $request->phone;
-        $firm->email = $request->email; //email du manager
-        $firm->color = $request->color;
-        $firm->siret = $request->siret;
-
-        $firm->visit_day_1 = $request->visit_day_1;
-        $firm->visit_day_2 = $request->visit_day_2;
-        $firm->time_1 = $request->time_1;
-        $firm->time_2 = $request->time_2;
-        $firm->title = $request->title;
-        $firm->news = $request->news;
-        $firm->image = $request->image;
-
+        $input = $request->all();
+        $firm = Firm::create($input);
 
         if ($request->hasFile('logo') && $request->file('logo')->isValid()) {
             $requestImage = $request->logo;
@@ -112,11 +98,15 @@ class FirmController extends Controller
             'donnees' => $firm,
         ]);
     }
-
+    /*
+    * Method qui permet d'afficher une entreprise avec ses relations
+    */
     public function show($id)
     {
         if ($this->device === "desktop") {
-            $firm = Firm::whereId($id)->with('users.orders.odetails')->get();
+            $firm = Firm::whereId($id)
+                ->with('users.orders.odetails')
+                ->get();
 
             return response()->json([
                 'status_code' => 200,
@@ -125,8 +115,12 @@ class FirmController extends Controller
                 'DEVICE' => $this->device,
             ]);
         }
-        $firm = Firm::with('users')->has('users.orders')->get();
-        return  response()->json($firm, 200); //Dois-je envoyer la réponse en json ?
+        $firm = Firm::where('id', $id)
+            ->with('users')
+            ->has('users.orders')
+            ->get();
+
+        return  response()->json($firm, 200);
     }
 
     public function edit($id)
@@ -140,10 +134,12 @@ class FirmController extends Controller
         ]);
     }
 
-    public function update(Request $request, $id)
+    public function update(StoreFirm $request, $id)
     {
         $firm = Firm::findOrFail($id);
+
         $firm->update($request->all());
+
         return response([
             'status_code' => 200,
             'message' => 'mise a jour de la firm réussie',

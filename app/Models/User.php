@@ -4,8 +4,6 @@ namespace App\Models;
 
 use Illuminate\Support\Facades\Mail;
 use App\Mail\MagicLoginLink;
-
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -76,9 +74,9 @@ class User extends Authenticatable
         Mail::to($this->email)->queue(new MagicLoginLink($plaintext, $token->expires_at));
     }
 
-    public static function getFirmId($id)
+    public function getFirmId()
     {
-        return User::where('id', $id)->value('firm_id');
+        return $this->firm_id;
     }
 
     public static function getUsersByFirmsByStatus($firmId)

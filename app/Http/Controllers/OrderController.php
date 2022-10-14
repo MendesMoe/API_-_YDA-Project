@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Firm;
 use App\Models\Order;
 use App\Models\Odetail;
 use App\Models\User;
@@ -33,6 +34,7 @@ class OrderController extends Controller
         $order->user_id = $request->user()->id;
         $order->comments = 'teste-lundi-midi';
         //$order->firm_id = User::getFirmId($request->user_id);
+        //$order->firm_id = $request->user()->firm_id;
         $order->status = "en attente";
         $order->save();
         //dd($order);
@@ -202,16 +204,28 @@ class OrderController extends Controller
             "10" => "Octobre",
             "11" => "Novembre",
             "12" => "Decembre"
-
         ];
 
         $caResult = [];
-
         foreach ($mois as $key => $value) {
             $caResult[$value] = Order::whereMonth('created_at', '=', $key)
                 ->sum('total');
         }
-
         return $caResult;
+    }
+
+    public function getCAByCompany()
+    {
+        $caByFirm = [];
+        $firms = Firm::select('name', 'id')->distinct()->get();
+
+        //dd($firms);
+
+        foreach ($firms as $firm) {
+            $caByFirm[$firm->name] = Order::where('id', $firm->id)
+                ->sum('total');
+        }
+
+        return $caByFirm;
     }
 }

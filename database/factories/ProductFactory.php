@@ -18,6 +18,8 @@ class ProductFactory extends Factory
             'name' => $this->faker->firstname(),
             'price' => $this->faker->randomNumber(2),
             'image' => 'f0a59c94116fdb9fda9a392100e75560.jpg',
+            'description' => $this->faker->text(60),
+            'status' => $this->faker->randomElement(['actif', 'inactif'])
         ];
     }
 }

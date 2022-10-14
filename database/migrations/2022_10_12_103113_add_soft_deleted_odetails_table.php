@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UpdateOrdersTable extends Migration
+class AddSoftDeletedOdetailsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,10 +12,8 @@ class UpdateOrdersTable extends Migration
      * @return void
      */
     public function up()
-
     {
-
-        Schema::table('orders', function (Blueprint $table) {
+        Schema::table('odetails', function (Blueprint $table) {
             $table->softDeletes();
         });
     }

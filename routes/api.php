@@ -64,5 +64,7 @@ Route::get('/getOrdersQtty', [OrderController::class, 'getOrdersQtty']);
 
 Route::get('/getCAPreviousMonth', [OrderController::class, 'getCAPreviousMonth']);
 
-
+////// ROUTES FOR JAVA DESKTOP - JFreeChart API
 Route::get('/getCAByMonth', [OrderController::class, 'getCAByMonth']);
+
+Route::get('/getCAByCompany', [OrderController::class, 'getCAByCompany']);

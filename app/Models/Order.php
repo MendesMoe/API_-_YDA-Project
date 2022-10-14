@@ -11,7 +11,7 @@ class Order extends Model
 {
     const EN_ATTENTE = 'En Attente';
     const EN_COURS = 'En Cours';
-    const TERMINEE = 'Terminée';
+    const TERMINEE = 'Terminee';
     const ANNULEE = "Annulee";
 
     use HasApiTokens;
