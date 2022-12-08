@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use \App\Models\User;
@@ -22,6 +23,8 @@ Route::get('/', function () {
 });
 
 Route::post('/login', [LoginController::class, 'login']);
+
+Route::get("/teste", [OrderController::class, "teste"]);
 
 
 //Route::get('/login', function () {

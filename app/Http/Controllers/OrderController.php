@@ -32,7 +32,7 @@ class OrderController extends Controller
     {
         $order = new Order();
         $order->user_id = $request->user()->id;
-        $order->comments = 'teste-lundi-midi';
+        $order->comments = 'livraison au bureau';
         //$order->firm_id = User::getFirmId($request->user_id);
         //$order->firm_id = $request->user()->firm_id;
         $order->status = "en attente";
@@ -227,5 +227,27 @@ class OrderController extends Controller
         }
 
         return $caByFirm;
+    }
+
+    public function teste()
+    {
+        $firms = Firm::all();
+
+        foreach ($firms as $firm) {
+            $next = Firm::where('id', '>', $firm->id)
+                ->oldest('id')
+                ->first();
+
+            ($next) ? $firm->next = $next->id : $firm->next = null;
+
+
+            $previous = Firm::where('id', '<', $firm->id)
+                ->latest('id')
+                ->first();
+
+            ($previous) ? $firm->previous = $previous->id : $firm->previous = null;
+        }
+
+        return view("teste", compact("firms"));
     }
 }

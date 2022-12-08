@@ -58,6 +58,8 @@ class FirmController extends Controller
             }
         }
 
+        //dd($firms);
+
         return  response()->json([$firms, 200, "funcao index"]); //Dois-je envoyer la réponse en json ?
     }
 
