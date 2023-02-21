@@ -15,7 +15,16 @@ class FirmFactory extends Factory
     {
         return [
             'address' => $this->faker->streetAddress(),
-            'name' => $this->faker->firstname(),
+            'name' => $this->faker->randomElement([
+                'Median Technologies',
+                'Symphony',
+                'Ekinnox',
+                'Kalray',
+                'Hublo',
+                'Aime Patrimoine',
+                'Entreprise',
+                'Entreprise x'
+            ]),
             'phone' => str_replace(" ", "", $this->faker->phoneNumber()),
             'email' => $this->faker->email(),
             'visit_day_1' => $this->faker->randomElement([

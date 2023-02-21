@@ -25,6 +25,10 @@ class OdetailFactory extends Factory
             'price_product' => $this->faker->randomFloat(3, 3, 30),
             'qtty' => $this->faker->randomNumber(1),
             'comments' => $this->faker->text(),
+            'name' => $this->faker->randomElement([
+                'Produto X',
+                'Produto B', 'Produto Z', 'Produto K'
+            ])
         ];
     }
 }

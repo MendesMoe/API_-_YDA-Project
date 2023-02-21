@@ -40,6 +40,7 @@ class UserController extends Controller
     {
         $users = User::where('firm_id', $id)->has('orders')->with('orders.odetails')->get();
         $res = array();
+
         $u = $users->filter(function ($item) {
             $ordersOnHold = $item->orders->filter(function ($order) {
                 return ($order->status != "terminee" && $order->status != "annule");
@@ -60,10 +61,11 @@ class UserController extends Controller
         // dd($u);
         //dd($u->toArray());
         if ($u) {
-            foreach ($u as $user) {
-                # code...
+            foreach ($u as $user) { //necessaire pour les keys
+
                 $res[] = $user;
             }
+
             return response()->json([
                 'status_code' => 200,
                 'message' => 'Données des users by company, only with orders - for mobile',

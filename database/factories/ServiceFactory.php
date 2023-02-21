@@ -17,7 +17,13 @@ class ServiceFactory extends Factory
     {
         return [
             'type_id' => 1,
-            'name' => $this->faker->firstname(),
+            'name' => $this->faker->randomElement([
+                'Courses',
+                'Nettoyage',
+                'Gourmandise',
+                'Cadeaux',
+                'Bien etre'
+            ]),
         ];
     }
 }

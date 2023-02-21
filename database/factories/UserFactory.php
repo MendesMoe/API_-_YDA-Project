@@ -25,7 +25,7 @@ class UserFactory extends Factory
                 ->format('Y-m-d')),
             'password' => Hash::make('12345678'),
             'remember_token' => Str::random(10),
-            //'role' => ('member'),
+            'avatar' => "cd8ac7316ba8ed13025ee3054176eae4.png"
         ];
     }
 

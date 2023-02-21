@@ -30,4 +30,9 @@ class Product extends Model
     {
         return $this->price;
     }
+    public function getPriceById($id)
+    {
+        $p = Product::find($id);
+        return $p->price;
+    }
 }

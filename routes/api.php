@@ -40,11 +40,11 @@ Route::post('inscription', [AuthController::class, 'newUser']);
 
 Route::get('verify-token/{token}', [AuthController::class, 'verifyToken'])->name('verify-token');
 
-Route::post('login', [AuthController::class, 'sendMagicLink'])->name('auth.login');
+Route::post('mail/login', [AuthController::class, 'sendMagicLink'])->name('auth.login');
 
-Route::post('connexion', [AuthController::class, 'login']);
+Route::post('login', [AuthController::class, 'login'])->name('login');
 
-Route::post('logout', [AuthController::class, 'logout']);
+Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::put('majMdp/{id}', [AuthController::class, 'majPassword']);
 
@@ -56,7 +56,7 @@ Route::get('/getUsersWithOrdersByFirm/{id}', [UserController::class, 'getCustome
 
 Route::put('order/changeStatus', [OrderController::class, 'changeStatus']);
 
-/////// ROUTE DESKTOP QTTY ORDERS TOTAL / QTTY CA TOTAL / QTTY CA PER MONTH
+/////// ROUTE FOR JAVA DESKTOP -  QTTY ORDERS TOTAL / QTTY CA TOTAL / QTTY CA PER MONTH
 
 Route::get('/getCATotal', [OrderController::class, 'getCATotalEnEuros']);
 

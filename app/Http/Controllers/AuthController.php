@@ -108,6 +108,7 @@ class AuthController extends Controller
         //return view('auth.login', compact('user'));
     }
     /**
+     * Method qui permet de réaliser le login des utilisateurs existants en DB
      * @param Request $request
      */
     public function login(Request $request)
@@ -145,7 +146,7 @@ class AuthController extends Controller
         ]);
     }
 
-    public function logout(Request $request)
+    public function logout() // function qui ne sert a rien pour une API, seulement le token suffit
     {
         Auth::logout();
         return response()->json([

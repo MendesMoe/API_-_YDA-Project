@@ -9,10 +9,7 @@ use App\Models\User;
 use App\Models\Product;
 
 use Illuminate\Http\Request;
-
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
-use Ramsey\Uuid\Type\Integer;
+use Illuminate\Support\Str;
 
 class OrderController extends Controller
 {
@@ -31,7 +28,7 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $order = new Order();
-        $order->user_id = $request->user()->id;
+        $order->user_id = 2;
         $order->comments = 'livraison au bureau';
         //$order->firm_id = User::getFirmId($request->user_id);
         //$order->firm_id = $request->user()->firm_id;
@@ -39,14 +36,16 @@ class OrderController extends Controller
         $order->save();
         //dd($order);
         $products = $request->products;
-        //dd($request->products);
+
         foreach ($products as $product) {
             $odetail = new Odetail();
-            $odetail->product_id = $product['id'];
-            $odetail->price_product = Product::getPrice($odetail->product_id);
+            $addProduct = Product::findOrFail($product['id']);
+
+            $odetail->product_id = $addProduct->id;
+            $odetail->price_product = $addProduct->price;
             $odetail->qtty = $product['quantity'];
             $odetail->order_id = $order->id;
-            $odetail->name = $product['name'];
+            $odetail->name = $addProduct->name;
             $odetail->comments = $product['comment'];
             $odetail->total_odetail = $odetail->qtty * $odetail->price_product;
 
@@ -89,20 +88,23 @@ class OrderController extends Controller
 
     public function update(Request $request, $id)
     {
+        $newStatus = $request->status;
         $order = Order::findOrFail($id);
 
-        if ($order->status != Order::TERMINEE && $order->status != Order::ANNULEE) {
+        if ($order->status === Str::lower(Order::EN_ATTENTE)) {
 
-            $order->update($request->all());
+            $order->update([
+                'status' => Str::lower($newStatus)
+            ]);
 
-            return response([
+            return response()->json([
                 'status_code' => 200,
                 'message' => 'success update order',
                 'donnees' => $order,
             ]);
         } else {
-            return response([
-                'message' => 'La commande est terminée ou annulé',
+            return response()->json([
+                'message' => 'La commande est deja en cours, annulee ou terminee',
                 'order->status' => $order->status,
             ]);
         }
@@ -110,26 +112,39 @@ class OrderController extends Controller
     /**
      * @param Request $request
      */
-    public function changeStatus(Request $request)
+    public function changeStatus(Request $request, $id)
     {
-        $order = Order::findOrFail($request->id);
+
+        $newStatus = $request->newStatus;
+
+        $order = Order::findOrFail($id);
+
+        if ($order->status == "terminee") {
+
+            return response()->json([
+                'status_code' => 404,
+                'message' => "Le status terminee ne peut pas etre modifiee",
+                'orderstatus' => $order->status,
+            ]);
+        }
 
         $success = $order->update([
-            'status' => $request->newStatus
+            'status' => $newStatus
         ]);
+
 
         if ($success) {
             return response()->json([
                 'status_code' => 200,
-                'message' => 'success update order',
+                'message' => "Success update order",
                 'newStatus' => $order->status,
-            ], 201);
+            ]);
         }
         return response()->json([
-            'status_code' => 400,
-            'message' => 'Le status n\'a pas pu etre modifiée',
+            'status_code' => 404,
+            'message' => 'Le statut n a pas pu etre modifie',
             'orderstatus' => $order->status,
-        ], 404);
+        ]);
     }
 
     public function destroy($id)
